@@ -7,7 +7,7 @@ from rest_framework import status
 
 
 class Student_list_create(APIView):  
-    def get(self,request,format=None,pk=None):
+    def get(self,request,pk=None):
         if pk is not None:
             student = Student.objects.get(pk=pk)
             serializer = StudentSerializer(student)
@@ -17,14 +17,14 @@ class Student_list_create(APIView):
         serializer = StudentSerializer(students, many=True)
         return Response(serializer.data)
     
-    def post(self,request,format=None):
+    def post(self,request):
         serializer = StudentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
     
-    def delete(self,request,format=None,pk=None):
+    def delete(self,request,pk=None):
         if pk is not None:
             student = Student.objects.get(pk=pk)
             student.delete()
@@ -32,7 +32,7 @@ class Student_list_create(APIView):
         Student.objects.all().delete()
         return Response({"message": "All students deleted."})
     
-    def put(self,request,format=None,pk=None):
+    def put(self,request,pk=None):
         student = Student.objects.get(pk=pk)
         serializer = StudentSerializer(student, data=request.data)
         if serializer.is_valid():
@@ -40,7 +40,7 @@ class Student_list_create(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
     
-    def patch(self,request,format=None,pk=None):
+    def patch(self,request,pk=None):
         student = Student.objects.get(pk=pk)
         serializer = StudentSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
